@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
+
+const path = require("path")
 const postRoute = require("./routes/post");
 
 const app = express();
@@ -22,9 +24,14 @@ app.use(bodyParser.json());
 app.use(logger("dev"));
 app.use(cors());
 
+app.use(express.static(path.join(__dirname, "client", "build")))
 app.use("/api/v1", postRoute);
 
 const port = process.env.PORT || 4000;
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 app.listen(port, () => {
     console.log(`server started on ${port}`);
