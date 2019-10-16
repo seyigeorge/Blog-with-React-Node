@@ -3,7 +3,7 @@ const Validator = require("validator");
 const cloudinary = require("cloudinary");
 const multer = require("multer");
 const cloudinaryStorage = require("multer-storage-cloudinary");
-require("dotenv").config(); 
+require("dotenv").config();
 
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
@@ -20,11 +20,10 @@ const storage = cloudinaryStorage({
   cloudinary: cloudinary,
   folder: "posts",
   allowedFormats: ["jpg", "png"],
-  transformation: [{ width: 500, height: 500, crop: "limit"}]
+  transformation: [{ width: 500, height: 500, crop: "limit" }]
 });
 
 const parser = multer({ storage: storage }).single("image");
-
 
 router.get("/posts", (req, res) => {
   Post.find({})
@@ -43,7 +42,7 @@ router.get("/posts", (req, res) => {
 //Fixed error here
 router.post("/post/add", parser, (req, res) => {
   const errors = [];
-  const { title, author, post, image } = req.body;
+  const { title, author, post } = req.body;
   if (Validator.isEmpty(title)) {
     errors.push({ message: "title field is required" });
   }
@@ -53,9 +52,6 @@ router.post("/post/add", parser, (req, res) => {
   if (Validator.isEmpty(post)) {
     errors.push({ message: "post field is required" });
   }
-  if (Validator.isEmpty(image)) {
-    errors.push({ message: "post field is required" });
-  }
 
   if (errors.length > 0) {
     res.send(errors);
@@ -63,8 +59,7 @@ router.post("/post/add", parser, (req, res) => {
     Post.create({
       title,
       author,
-      post,
-      image
+      post
     })
       .then(post => {
         if (!post) {

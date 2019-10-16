@@ -3,8 +3,6 @@ import axios from "axios";
 import FormData from "form-data";
 import "./AddPost.css";
 
-
-
 class AddPost extends Component {
   constructor(props) {
     super(props);
@@ -26,11 +24,11 @@ class AddPost extends Component {
     e.preventDefault();
     let imageFile = e.target.files[0];
     this.setState({ [e.target.name]: imageFile });
-  }
+  };
 
   handleSubmit = e => {
     e.preventDefault();
-    const { title, author, post, image } = this.state;   
+    const { title, author, post, image } = this.state;
     const formData = new FormData();
     formData.set("title", title);
     formData.set("post", post);
@@ -42,11 +40,11 @@ class AddPost extends Component {
       data: formData,
       config: { headers: { "Content-Type": "multipart/form-data" } }
     }).then(res => {
-        console.log(res);
-        if (res.status === 200) {
-          this.props.history.replace("/");
-        }
-      });
+      console.log(res);
+      if (res.status === 200) {
+        this.props.history.replace("/");
+      }
+    });
   };
 
   render() {
@@ -87,16 +85,6 @@ class AddPost extends Component {
                 value={post}
                 onChange={this.handleChange}
               ></textarea>
-            </div>
-            <div className="form-group">
-              <label for="title">Image</label>
-              <input
-                type="file"
-                name="image"
-                id="image"
-                value={image}
-                onChange={this.handleImageChange}
-              />
             </div>
             <button
               className="form-control btn-primary"
