@@ -24,7 +24,7 @@ class Home extends Component {
 
     componentDidMount() {
         this.setState({
-            loading: true
+            loading: false
         });
         axios.get("http://localhost:4000/api/v1/posts").then(res => {
             if (res.status === 201) {
